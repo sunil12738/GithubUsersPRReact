@@ -1,51 +1,54 @@
-import React from 'react';
+	import React from 'react';
 
-{/*
-Below are two methods for the same:
-*/}
+	{/*
+	Below are two methods for the same:
+	*/}
 
-var App = React.createClass({
+	var App = React.createClass({
 	render: function(){
 		return (
 			<div>
-				Hello World
-        <UserGist />
+				<SearchModule />
 			</div>
 		);
 	}
-});
+	});
 
-var UserGist = React.createClass({
-  getInitialState: function() {
-    return {
-      username: '',
-      lastGistUrl: ''
-    };
-  },
+	var SearchModule = React.createClass({
+	render: function(){
+		return(
+			<div>
+			<SearchTextBox />
+			<SearchButton />
+	 		</div>
+		);
+	}
+	});
 
-  componentDidMount: function() {
-    this.serverRequest = $.get("https://api.github.com/users/octocat/gists", function (result) {
-      var lastGist = result[0];
-			console.log(lastGist);
-      this.setState({
-        username: lastGist.owner.login,
-        lastGistUrl: lastGist.html_url
-      });
-    }.bind(this));
-  },
+	var SearchTextBox = React.createClass({
+		render: function(){
+			return(
+				<span>
+				<input type="text" placeholder="type user" id="searchTextBox"></input>
+				</span>
+			);
+		}
+	});
 
-  componentWillUnmount: function() {
-    this.serverRequest.abort();
-  },
+	var SearchButton = React.createClass({
+		handleClick: function() {
+			var x = document.getElementById('searchTextBox').value;
+			console.log(x);
+  	},
+		render: function(){
+			return(
+				<span>
+				<input type="submit" value="submit" onClick={this.handleClick} id="searchButton"></input>
+    		</span>
+			);
+		}
+	});
 
-  render: function() {
-    return (
-      <div>
-        {this.state.username}'s last gist is
-        <a href={this.state.lastGistUrl}>here</a>.
-      </div>
-    );
-  }
-});
 
-export default App;
+
+	export default App;
