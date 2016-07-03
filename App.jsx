@@ -1,4 +1,6 @@
 	import React from 'react';
+	import ReactDOM from 'react-dom';
+
 
 	{/*
 	Below are two methods for the same:
@@ -36,10 +38,25 @@
 	});
 
 	var SearchButton = React.createClass({
+
 		handleClick: function() {
-			var x = document.getElementById('searchTextBox').value;
-			console.log(x);
+			var username = document.getElementById('searchTextBox').value;
+			var myInit = {
+				method: "GET"
+			};
+
+			var userUrl = "https://api.github.com/users/"+username;
+
+			fetch(userUrl,myInit).then((response) =>{
+				return response.json();
+			}).then((data) => {
+				if(data.login==username){
+				}
+				else{
+				}
+			});
   	},
+
 		render: function(){
 			return(
 				<span>
@@ -49,6 +66,14 @@
 		}
 	});
 
-
+	var NoUserFound = React.createClass({
+		render: function(){
+			return(
+				<div>
+    		User not found
+    		</div>
+			);
+		}
+	});
 
 	export default App;
