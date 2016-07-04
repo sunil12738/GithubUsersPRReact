@@ -26,7 +26,7 @@
 		render: function(){
 			return(
 				<span>
-				<input type="text" placeholder="type user" id="searchTextBox" ref="hiii"></input>
+				<input type="text" placeholder="type user" id="searchTextBox"></input>
 				</span>
 			);
 		}
@@ -99,7 +99,8 @@
 			issuesurl:React.PropTypes.array,
 			estate:React.PropTypes.array,
 			createdat:React.PropTypes.array,
-			closedat:React.PropTypes.array
+			closedat:React.PropTypes.array,
+			temp:''
 		},
 		getInitialState: function() {
 			return {
@@ -109,30 +110,30 @@
 				issuesurl:(this.props.links || []),
 				estate:(this.props.links || []),
 				createdat:(this.props.links || []),
-				closedat:(this.props.links || [])
+				closedat:(this.props.links || []),
+				temp:''
 			};
 		},
 
 		componentDidMount: function() {
 				var username = document.getElementById('searchTextBox').value;
 				var prurl = 'https://api.github.com/search/issues?q=author:'+username+'+type:pr';
-				window.alert(prurl);
 			this.serverRequest = $.get(prurl, function (result) {
-				console.log(result);
-				console.log(result["total_count"]);
-				for(var i=0;i<10;++i){
+				for(var i=0;i<result["total_count"];++i){
 					this.state.repourl.push(result["items"][i]["repository_url"]);
 					this.state.issuesurl.push(result["items"][i]["url"]);
 					this.state.estate.push(result["items"][i]["state"]);
 					this.state.createdat.push(result["items"][i]["created_at"]);
 					this.state.closedat.push(result["items"][i]["created_at"]);
+					this.state.temp=this.state.temp+'<div><div><span class="col-lg-8 ">'+result["items"][i]["repository_url"]+'</span><span>'+result["items"][i]["state"]+'</span></div><div>'+result["items"][i]["url"]+'</div><div>'+result["items"][i]["created_at"]+'</div><div><span>'+result["items"][i]["created_at"]+'</span><span><a target=\"_blank\" href='+result["items"][i]["html_url"]+'>More Details</a></span></div></div>';
 				}
 				this.setState({
 	        repourl: this.state.repourl,
 					issuesurl: this.state.issuesurl,
 					estate: this.state.estate,
 					createdat: this.state.createdat,
-					closedat: this.state.closedat
+					closedat: this.state.closedat,
+					temp: this.state.temp
 	      });
 			}.bind(this));
 		},
@@ -145,10 +146,18 @@
 			return(
 				<div>
     		{this.props.userfound}
-					<RepoUrl repourl={this.state.repourl}	issuesurl={this.state.issuesurl}
-						estate={this.state.estate} createdat={this.state.createdat}
-						closedat={this.state.closedat} />
+				<Temp temp={this.state.temp} />
     		</div>
+			);
+		}
+	});
+
+	var Temp = React.createClass({
+		render: function(){
+			return(
+				<div>
+				<div className="content1" dangerouslySetInnerHTML={{__html: this.props.temp}}></div>
+				</div>
 			);
 		}
 	});
