@@ -178,7 +178,7 @@
 								'<div class="row">' +
 										'<div class="col-xs-8 col-sm-8 col-md-8 col-lg-10">Closed At: '+result["items"][i]["closed_at"]+'</div>' +
 											'<div class="col-xs-4 col-sm-4 col-md-4 col-lg-2">'+
-												'<a href="result["items"][i]["html_url"]" target=\"_blank\">'+
+												'<a href='+result["items"][i]["html_url"]+' target=\"_blank\">'+
 													'More Details' +
 												'</a>'+
 											'</div>' +
